@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#08090b">
+
+    <title>THE BLACK ARCHIVE | CASE 001</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #08090b;
+            color: #d6d1c7;
+            font-family: 'IBM Plex Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        .archive-background {
+            position: fixed;
+            inset: 0;
+            z-index: -5;
+            background:
+                linear-gradient(90deg, rgba(5,6,8,.96), rgba(5,6,8,.70)),
+                linear-gradient(0deg, #08090b 0%, transparent 70%),
+                url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1920')
+                center / cover no-repeat;
+            filter: grayscale(65%) contrast(115%);
+        }
+
+        .archive-background::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                rgba(255,255,255,.018) 1px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+        }
+
+        .topbar {
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            border-bottom: 1px solid #292727;
+            background: rgba(5,6,8,.92);
+            letter-spacing: 2px;
+            font-size: 10px;
+        }
+
+        .brand {
+            color: #e5ded0;
+            font-weight: 700;
+        }
+
+        .brand span {
+            color: #a33b36;
+        }
+
+        .security {
+            color: #a34a43;
+        }
+
+        .layout {
+            width: min(1400px, 94%);
+            margin: 55px auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 25px;
+        }
+
+        .main-panel {
+            min-height: 650px;
+            padding: 35px;
+            border: 1px solid #393333;
+            background: rgba(9,10,12,.88);
+            box-shadow: 0 20px 80px rgba(0,0,0,.6);
+        }
+
+        .eyebrow {
+            color: #a34a43;
+            font-size: 11px;
+            letter-spacing: 4px;
+        }
+
+        .case-heading {
+            margin: 20px 0 5px;
+            font-family: 'Special Elite', serif;
+            font-size: clamp(48px, 8vw, 100px);
+            line-height: .95;
+            color: #e3ded4;
+            letter-spacing: -4px;
+        }
+
+        .case-heading span {
+            color: #a13b35;
+        }
+
+        .subtitle {
+            color: #8d8982;
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin: 20px 0 35px;
+        }
+
+        .case-content {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 25px;
+            align-items: stretch;
+        }
+
+        .photo-frame {
+            min-height: 340px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #493d39;
+            background:
+                linear-gradient(0deg, rgba(0,0,0,.85), transparent 75%),
+                url('https://images.unsplash.com/photo-1517841905240-472988babdf9?w=900')
+                center 35% / cover no-repeat;
+            filter: grayscale(100%);
+        }
+
+        .photo-frame::after {
+            content: "SUBJECT PHOTOGRAPH / RECOVERED";
+            position: absolute;
+            left: 15px;
+            bottom: 15px;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: #ded7cb;
+        }
+
+        .case-details {
+            border: 1px solid #302c2b;
+            padding: 22px;
+            background: rgba(15,15,16,.85);
+        }
+
+        .section-label {
+            font-size: 10px;
+            color: #a34a43;
+            letter-spacing: 3px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #393333;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #242323;
+            font-size: 11px;
+        }
+
+        .detail-row span:first-child {
+            color: #77736d;
+        }
+
+        .detail-row span:last-child {
+            text-align: right;
+            color: #d6d1c7;
+        }
+
+        .alert {
+            color: #c45b51 !important;
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .side-card {
+            border: 1px solid #393333;
+            padding: 22px;
+            background: rgba(9,10,12,.91);
+        }
+
+        .side-card h3 {
+            font-size: 11px;
+            letter-spacing: 3px;
+            font-weight: 500;
+            color: #a34a43;
+            margin: 0 0 20px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 11px;
+            color: #d6d1c7;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #a33b35;
+            box-shadow: 0 0 12px #a33b35;
+        }
+
+        .warning-box {
+            border-left: 2px solid #a33b35;
+            padding: 12px;
+            background: rgba(135,35,30,.10);
+            color: #a7a097;
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .bottomline {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #393333;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            color: #69645e;
+            font-size: 9px;
+            letter-spacing: 2px;
+        }
+
+        #app {
+            position: relative;
+            z-index: 2;
+        }
+
+        #ov {
+            z-index: 20;
+        }
+
+        #toast {
+            z-index: 30;
+        }
+
+        #mute {
+            position: fixed;
+            bottom: 18px;
+            right: 20px;
+            z-index: 40;
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                grid-template-columns: 1fr;
+                margin: 25px auto;
+            }
+
+            .case-content {
+                grid-template-columns: 1fr;
+            }
+
+            .main-panel {
+                padding: 22px;
+            }
+
+            .photo-frame {
+                min-height: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                padding: 0 15px;
+                font-size: 8px;
+            }
+
+            .layout {
+                width: 96%;
+            }
+
+            .case-heading {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="archive-background"></div>
+
+    <div class="topbar">
+        <div class="brand">BLACK<span>WOOD</span> / ARCHIVE</div>
+        <div class="security">● SECURE CONNECTION</div>
+        <div>FILE 002 / 2025</div>
+    </div>
+
+    <div id="fx"></div>
+
+    <!-- GAME ENGINE RENDERS THE ACTUAL SCREENS HERE -->
+    <div id="app">
+
+        <div class="layout">
+
+            <main class="main-panel">
+
+                <div class="eyebrow">
+                    CLASSIFIED INVESTIGATION / FILE 002
+                </div>
+
+                <h1 class="case-heading">
+                    MISSING<br>
+                    <span>PERSON.</span>
+                </h1>
+
+                <p class="subtitle">
+                    EVERY SECRET LEAVES EVIDENCE.
+                </p>
+
+                <div class="case-content">
+
+                    <div class="photo-frame"></div>
+
+                    <div class="case-details">
+
+                        <div class="section-label">
+                            SUBJECT INFORMATION
+                        </div>
+
+                        <div class="detail-row">
+                            <span>NAME</span>
+                            <span>ELIAS V. MERCER</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span>AGE</span>
+                            <span>21</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span>LOCATION</span>
+                            <span>BLACKWOOD UNIVERSITY</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span>LAST SEEN</span>
+                            <span>OCT 17, 2025</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <span>CASE STATUS</span>
+                            <span class="alert">UNRESOLVED</span>
+                        </div>
+
+                        <div class="warning-box">
+                            WARNING: SUBJECT HAS NO VERIFIED
+                            ENROLLMENT RECORD. ALL RECORDS
+                            REGARDING THIS INDIVIDUAL ARE
+                            RESTRICTED.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="bottomline">
+                    <span>BLACKWOOD UNIVERSITY</span>
+                    <span>ARCHIVE DIVISION</span>
+                    <span>UNAUTHORIZED ACCESS PROHIBITED</span>
+                </div>
+
+            </main>
+
+            <aside class="side-panel">
+
+                <div class="side-card">
+                    <h3>SYSTEM STATUS</h3>
+
+                    <p class="status">
+                        <span class="dot"></span>
+                        ARCHIVE ONLINE
+                    </p>
+
+                    <p class="status">
+                        <span class="dot"></span>
+                        CASE DATABASE CONNECTED
+                    </p>
+                </div>
+
+                <div class="side-card">
+                    <h3>INVESTIGATION NOTICE</h3>
+
+                    <div class="warning-box">
+                        FIVE PEOPLE ENTERED THE LIBRARY.
+
+                        <br><br>
+
+                        SIX PEOPLE LEFT.
+
+                        <br><br>
+
+                        ACCORDING TO OFFICIAL RECORDS,
+                        NOBODY WAS MISSING.
+                    </div>
+                </div>
+
+                <div class="side-card">
+                    <h3>RESTRICTED FILES</h3>
+
+                    <div class="detail-row">
+                        <span>CASE 001</span>
+                        <span>SEALED</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>CASE 002</span>
+                        <span class="alert">ACTIVE</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>CASE 003</span>
+                        <span>LOCKED</span>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+    <div id="ov"></div>
+    <div id="toast"></div>
+
+    <button id="mute" type="button">MUTE AUDIO</button>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+
